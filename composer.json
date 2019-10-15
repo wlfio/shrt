@@ -12,7 +12,8 @@
     "require": {
         "php" : "^7.2",
         "ext-json": "*",
-        "wlfio/slimfast" : "0.1.*@dev"
+        "wlfio/slimfast" : "0.1.*@dev",
+        "bryanjhv/slim-session": "^4.0"
     },
     "repositories": [
         {

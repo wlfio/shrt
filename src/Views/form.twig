@@ -1,15 +1,15 @@
 {% extends "root.twig" %}
 
-{% block title %}Index{% endblock %}
-{% block head %}
-    {{ parent() }}
-    <style type="text/css">
-        .important { color: #336699; }
-    </style>
-{% endblock %}
+{% block title %}Create{% endblock %}
+
 {% block content %}
-    <h1>Index</h1>
-    <p class="important">
-        Welcome on my awesome homepage.
-    </p>
+    {% if short is not empty %}
+        <span>{{ short }}</span>
+    {% endif %}
+    <form action="/{{ token }}" method="post">
+        <p style="color: red">{{ error }}</p>
+        <input type="text" name="url" value="{{ url }}">
+        <input type="submit">
+    </form>
+    <pre>{{ urls | json_encode(128) }}</pre>
 {% endblock %}

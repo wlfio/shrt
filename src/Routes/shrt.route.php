@@ -7,4 +7,4 @@ use WlfIO\Shrt\Controllers\RedirectController;
 $this
     ->addRoute(["GET"],"/{id}",RedirectController::class . ":redirect")
     ->addRoute(["GET"],"/", ShrtController::class. ":form")
-    ->addRoute(["POST"], "/", [ShrtController::class, "create"]);
+    ->addRoute(["POST"], "/{token}", ShrtController::class. ":create");
