@@ -1,0 +1,67 @@
+version: '2.3'
+
+networks:
+  sql:
+  dev:
+
+volumes:
+  mysql-volume:
+
+services:
+  haproxy:
+    image: 'dockercloud/haproxy:1.5.3'
+    environment:
+    - STATS_AUTH=stats:4C2j1jW7tC817lb
+    - TIMEOUT=connect 50000, client 500000, server 500000
+#    - CERT_FOLDER=/certs/
+    links:
+    - shrt
+    #    expose:
+    #      - 80
+    #      - 443
+    ports:
+    - 127.0.0.99:80:80
+    - 127.0.0.99:443:443
+    #      - 127.0.0.99:1936:1936
+    volumes:
+#    - ./.docker/SSL/certs/server.bundle.pem:/certs/cert0.pem
+    - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+    - dev
+  shrt:
+    build: .
+    environment:
+      VIRTUAL_HOST: https://shrt.test, http://shrt.test
+      MYSQL_USERNAME: shrt
+      MYSQL_HOSTNAME: mysql
+      MYSQL_PASSWORD: PLZroJw3n8PWeyUS
+      MYSQL_DATABASE: shrt
+    networks:
+      - sql
+      - dev
+    volumes:
+      - ".:/app"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    healthcheck:
+      interval: 10s
+      retries: 5
+      start_period: 10s
+  mysql:
+    #image: wlfio/mysql-healthcheck:local
+    image: 658637146154.dkr.ecr.eu-west-1.amazonaws.com/mysql:commit_c8a8d75
+    command: --sql-mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
+    networks:
+      - sql
+    environment:
+      MYSQL_ROOT_PASSWORD: 1IF4oMBSCeB5d1oC
+      MYSQL_USER: shrt
+      MYSQL_PASSWORD: PLZroJw3n8PWeyUS
+      MYSQL_DATABASE: shrt
+    volumes:
+      - mysql-volume:/var/lib/mysql
+    healthcheck:
+      interval: 10s
+      retries: 5
+      start_period: 10s

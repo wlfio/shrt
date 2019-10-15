@@ -1,0 +1,28 @@
+{
+    "name": "wlfio/shrt",
+    "description": "url shortener",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "WolfGang",
+            "email": "shrt@wlf.io"
+        }
+    ],
+    "require": {
+        "php" : "^7.2",
+        "ext-json": "*",
+        "wlfio/slimfast" : "0.1.*@dev"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url":  "git@github.com:wlfio/slimfast.git"
+        }
+    ],
+    "autoload": {
+        "psr-4" : {
+            "WlfIO\\Shrt\\" : "src"
+        }
+    }
+}
